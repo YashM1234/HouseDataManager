@@ -1,1 +1,1 @@
-# House Data MAnager
+# House Data Manager
