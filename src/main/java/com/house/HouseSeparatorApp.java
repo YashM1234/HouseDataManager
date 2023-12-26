@@ -7,7 +7,7 @@ import java.util.List;
 
 public class HouseSeparatorApp {
     public static void main(String[] args) {
-        File file = new File("D:\\Tasks\\housing_price_dataset.csv");
+        File file = new File("src/main/resources/housing_price_dataset.csv");
         try{
             BufferedReader reader = new BufferedReader(new FileReader(file));
 
@@ -21,13 +21,13 @@ public class HouseSeparatorApp {
             }
 
             //2bhk houses
-            dataWriter(separateHouses(houses, 2), "D:\\Tasks\\houses2bhk.csv", header);
+            dataWriter(separateHouses(houses, 2), "src/main/resources/bhk/houses2bhk.csv", header);
 
             //3bhk houses
-            dataWriter(separateHouses(houses, 3), "D:\\Tasks\\houses3bhk.csv", header);
+            dataWriter(separateHouses(houses, 3), "src/main/resources/bhk/houses3bhk.csv", header);
 
             //4bhk houses
-            dataWriter(separateHouses(houses, 3), "D:\\Tasks\\houses4bhk.csv", header);
+            dataWriter(separateHouses(houses, 3), "src/main/resources/bhk/houses4bhk.csv", header);
         }catch(IOException ex){
             ex.printStackTrace();
         }
