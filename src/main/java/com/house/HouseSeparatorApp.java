@@ -1,82 +1,43 @@
 package com.house;
 
-import com.house.model.House;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import com.house.helper.HeaderReader;
+import com.house.inmemory.InMemoryStorage;
+import com.house.service.CsvReader;
+import com.house.service.CsvWriter;
+import com.house.service.JsonWriter;
+import com.house.service.Operation;
 
 public class HouseSeparatorApp {
     public static void main(String[] args) {
-        File file = new File("src/main/resources/housing_price_dataset.csv");
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(file));
 
-            String line = reader.readLine();
-            String header = line;
-            List<House> houses = new ArrayList<>();
+        Operation csvReader = new CsvReader();
+        csvReader.read("src/main/resources/housing_price_dataset.csv");
 
-            while((line = reader.readLine()) != null){
-                House house = buildHouse(line);
-                houses.add(house);
-            }
+        Operation csvWriter = new CsvWriter();
+        //2bhk houses
+        csvWriter.write(InMemoryStorage.houses, 2 ,"src/main/resources/bhk/houses2bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
-            //2bhk houses
-            dataWriter(separateHouses(houses, 2), "src/main/resources/bhk/houses2bhk.csv", header);
+        //3bhk houses
+        csvWriter.write(InMemoryStorage.houses, 3, "src/main/resources/bhk/houses3bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
-            //3bhk houses
-            dataWriter(separateHouses(houses, 3), "src/main/resources/bhk/houses3bhk.csv", header);
+        //4bhk houses
+        csvWriter.write(InMemoryStorage.houses, 4, "src/main/resources/bhk/houses4bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
-            //4bhk houses
-            dataWriter(separateHouses(houses, 3), "src/main/resources/bhk/houses4bhk.csv", header);
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
-    }
+        //5bhk houses
+        csvWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
-    private static List<House> separateHouses(List<House> houses, int count) {
-        return houses.stream()
-                .filter(house -> house.getBedrooms() == count).toList();
-    }
+        Operation jsonWriter = new JsonWriter();
+        //2bhk houses
+        jsonWriter.write(InMemoryStorage.houses, 2 ,"src/main/resources/bhk/houses2bhk.json", null);
 
-    private static void dataWriter(List<House> houses, String path, String header) {
-        File file = new File(path);
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(header);
-        buffer.append("\n");
-        for(House house : houses){
-            String line = toCsv(house);
-            buffer.append(line);
-            buffer.append("\n");
-        }
-        try{
-            FileWriter writer = new FileWriter(file);
-            writer.write(buffer.toString());
-            writer.flush();
-            writer.close();
-        }catch (IOException ex){
-            ex.printStackTrace();
-        }
-    }
+        //3bhk houses
+        jsonWriter.write(InMemoryStorage.houses, 3, "src/main/resources/bhk/houses3bhk.json", null);
 
-    private static String toCsv(House house) {
-        return house.getSquareFeet()
-                + "," + house.getBedrooms()
-                + "," + house.getBathrooms()
-                + "," + house.getNeighborhood()
-                + "," + house.getYearBuilt()
-                + "," + house.getPrice();
-    }
+        //4bhk houses
+        jsonWriter.write(InMemoryStorage.houses, 4, "src/main/resources/bhk/houses4bhk.json", null);
 
+        //5bhk houses
+        jsonWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.json", null);
 
-    private static House buildHouse(String line) {
-        String[] fields = line.split(",");
-        return House.builder()
-                .squareFeet(Integer.parseInt(fields[0]))
-                .bedrooms(Integer.parseInt(fields[1]))
-                .bathrooms(Integer.parseInt(fields[2]))
-                .neighborhood(fields[3])
-                .yearBuilt(Integer.parseInt(fields[4]))
-                .price(Double.parseDouble(fields[5]))
-                .build();
     }
 }
