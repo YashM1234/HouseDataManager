@@ -5,7 +5,7 @@ import com.house.helper.PriceCompare;
 public class CompareOperationImpl implements CompareOperation {
 
     @Override
-    public void max(String path1, String path2) {
+    public void compare(String path1, String path2) {
         double house2bhkMax = PriceCompare.getMaxPrice(path1);
         double house3bhkMax = PriceCompare.getMaxPrice(path2);
 

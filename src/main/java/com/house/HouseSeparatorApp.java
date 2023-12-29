@@ -1,16 +1,17 @@
 package com.house;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.house.helper.HeaderReader;
 import com.house.inmemory.InMemoryStorage;
 import com.house.service.*;
 
 public class HouseSeparatorApp {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
 
-        Operation csvReader = new CsvReader();
+        ReadOperation csvReader = new CsvReader();
         csvReader.read("src/main/resources/housing_price_dataset.csv");
 
-        Operation csvWriter = new CsvWriter();
+        WriteOperation csvWriter = new CsvWriter();
         //2bhk houses
         csvWriter.write(InMemoryStorage.houses, 2 ,"src/main/resources/bhk/houses2bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
@@ -23,7 +24,7 @@ public class HouseSeparatorApp {
         //5bhk houses
         csvWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.csv", HeaderReader.getHeader("src/main/resources/housing_price_dataset.csv"));
 
-        Operation jsonWriter = new JsonWriter();
+        WriteOperation jsonWriter = new JsonWriter();
         //2bhk houses
         jsonWriter.write(InMemoryStorage.houses, 2 ,"src/main/resources/bhk/houses2bhk.json", null);
 
@@ -37,7 +38,7 @@ public class HouseSeparatorApp {
         jsonWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.json", null);
 
         CompareOperation maxFinder = new CompareOperationImpl();
-        maxFinder.max("src/main/resources/bhk/houses2bhk.csv", "src/main/resources/bhk/houses3bhk.csv");
+        maxFinder.compare("src/main/resources/bhk/houses2bhk.csv", "src/main/resources/bhk/houses3bhk.csv");
 
     }
 }

@@ -1,8 +1,8 @@
 package com.house.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.house.helper.HouseSeparator;
-import com.house.helper.ToCsvConverter;
+import com.house.helper.HouseFilter;
 import com.house.model.House;
 
 import java.io.File;
@@ -10,26 +10,25 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class JsonWriter implements Operation{
+public class JsonWriter implements WriteOperation {
     ObjectMapper objectMapper = new ObjectMapper();
-    @Override
-    public void read(String path) {
-
-    }
 
     @Override
     public void write(List<House> houses, int count, String path, String header) {
-        List<House> houseCategory = HouseSeparator.separateHouses(houses, count);
+        List<House> houseCategory = HouseFilter.separateHouses(houses, count);
         File file = new File(path);
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(houseCategory);
+        } catch (JsonProcessingException ex) {
+            throw new RuntimeException("Json not processed!");
+        }
 
-        try{
-            String json = objectMapper.writeValueAsString(houseCategory);
-            FileWriter writer = new FileWriter(file);
+        try(FileWriter writer = new FileWriter(file);){
             writer.write(json);
             writer.flush();
-            writer.close();
         }catch (IOException ex){
-            ex.printStackTrace();
+            throw new RuntimeException("File " + path + " could not found!");
         }
     }
 }

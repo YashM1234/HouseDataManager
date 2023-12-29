@@ -5,11 +5,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class PriceCompare  {
+public class PriceCompare {
     public static double getMaxPrice(String path) {
         File file = new File(path);
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(file));
+        try(BufferedReader reader = new BufferedReader(new FileReader(file));){
             String line = reader.readLine();
             double max = Double.MIN_VALUE;
             while((line = reader.readLine() )!= null){
@@ -20,8 +19,7 @@ public class PriceCompare  {
             }
             return max;
         }catch(IOException ex){
-            ex.printStackTrace();
-            return 0;
+            throw new RuntimeException("File " + path + " could not found!");
         }
     }
 }

@@ -8,28 +8,19 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
-public class CsvReader implements Operation{
+public class CsvReader implements ReadOperation {
     @Override
     public void read(String path) {
         File file = new File(path);
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-
+        try(BufferedReader reader = new BufferedReader(new FileReader(file));){
             String line = reader.readLine();
-
             while((line = reader.readLine()) != null){
                 House house = HouseBuilder.buildHouse(line);
                 InMemoryStorage.houses.add(house);
             }
         }catch(IOException ex){
-            ex.printStackTrace();
+            throw new RuntimeException("File not found!");
         }
-    }
-
-    @Override
-    public void write(List<House> houses, int count, String path, String header) {
-
     }
 }

@@ -2,7 +2,7 @@ package com.house.helper;
 
 import com.house.model.House;
 
-public class ToCsvConverter {
+public class CsvConverter {
     public static String toCsv(House house) {
         return house.getSquareFeet()
                 + "," + house.getBedrooms()
