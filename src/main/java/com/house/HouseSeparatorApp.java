@@ -2,10 +2,7 @@ package com.house;
 
 import com.house.helper.HeaderReader;
 import com.house.inmemory.InMemoryStorage;
-import com.house.service.CsvReader;
-import com.house.service.CsvWriter;
-import com.house.service.JsonWriter;
-import com.house.service.Operation;
+import com.house.service.*;
 
 public class HouseSeparatorApp {
     public static void main(String[] args) {
@@ -38,6 +35,9 @@ public class HouseSeparatorApp {
 
         //5bhk houses
         jsonWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.json", null);
+
+        CompareOperation maxFinder = new CompareOperationImpl();
+        maxFinder.max("src/main/resources/bhk/houses2bhk.csv", "src/main/resources/bhk/houses3bhk.csv");
 
     }
 }
