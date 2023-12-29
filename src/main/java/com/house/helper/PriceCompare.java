@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MaxFinder {
+public class PriceCompare  {
     public static double getMaxPrice(String path) {
         File file = new File(path);
         try{
