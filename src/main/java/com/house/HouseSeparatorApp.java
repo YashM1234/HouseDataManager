@@ -49,8 +49,8 @@ public class HouseSeparatorApp {
         DuplicateFinder duplicateFinder = new DuplicateFinder();
         duplicateFinder.findDuplicate(InMemoryStorage.houses);
 
-        //Matrix
-        MatrixCollector collector = new BedroomNeighborhoodMatrix();
+        //Metrics
+        MetricsCollector collector = new BedroomNeighborhoodMetrics();
         collector.collect(InMemoryStorage.houses, "src/main/resources/bhk/bedroomsWiseData.json");
     }
 }

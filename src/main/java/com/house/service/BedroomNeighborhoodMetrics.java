@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class BedroomNeighborhoodMatrix implements MatrixCollector{
+public class BedroomNeighborhoodMetrics implements MetricsCollector {
     @Override
     public void collect(List<House> houses, String destination) {
         Map<Integer, List<House>> bedrooms =
@@ -17,14 +17,13 @@ public class BedroomNeighborhoodMatrix implements MatrixCollector{
 
         Map<Integer, NeighborhoodCount> countHouse = new HashMap<>();
         bedrooms.forEach((bhk, records) -> {
-            Map<String, List<House>> bhkNeighborhood = records.stream()
+            Map<String, List<House>> countNeighborhood = records.stream()
                     .collect(Collectors.groupingBy(House::getNeighborhood));
-            System.out.println(bhk + "BHK: " + records.size());
-            NeighborhoodCount neighborhoodCount = NeighborhoodCount.builder().total(records.size()).build();
-            bhkNeighborhood.entrySet().forEach((entity) -> {
-                setValues(entity, neighborhoodCount);
+            NeighborhoodCount count = NeighborhoodCount.builder().total(records.size()).build();
+            countNeighborhood.entrySet().forEach((entity) -> {
+                setValues(entity, count);
             });
-            countHouse.put(bhk, neighborhoodCount);
+            countHouse.put(bhk, count);
         });
         BedRoomCount count = BedRoomCount.builder().bedrooms(countHouse).build();
         JsonWriter.write(count, destination);
