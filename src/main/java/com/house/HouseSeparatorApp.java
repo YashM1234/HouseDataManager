@@ -37,8 +37,20 @@ public class HouseSeparatorApp {
         //5bhk houses
         jsonWriter.write(InMemoryStorage.houses, 5, "src/main/resources/bhk/houses5bhk.json", null);
 
+        //merge operation
         CompareOperation maxFinder = new CompareOperationImpl();
         maxFinder.compare("src/main/resources/bhk/houses2bhk.csv", "src/main/resources/bhk/houses3bhk.csv");
 
+        //csv to pdf
+        FileConverter toPdf = new CsvToPdfConverter();
+        toPdf.csvToPdfConverter("src/main/resources/bhk/houses2bhk.csv", "src/main/resources/bhk/house2bhk.pdf");
+
+        //get duplicate count
+        DuplicateFinder duplicateFinder = new DuplicateFinder();
+        duplicateFinder.findDuplicate(InMemoryStorage.houses);
+
+        //Matrix
+        MatrixCollector collector = new BedroomNeighborhoodMatrix();
+        collector.collect(InMemoryStorage.houses, "src/main/resources/bhk/bedroomsWiseData.json");
     }
 }
