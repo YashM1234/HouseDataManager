@@ -33,12 +33,12 @@ public class JsonWriter implements WriteOperation {
         }
     }
 
-    public static void write(BedRoomCount matrixResult, String path ){
+    public static void write(BedRoomCount metricsResult, String path ){
         ObjectMapper objectMapper1 = new ObjectMapper();
         File file = new File(path);
         String json = null;
         try {
-            json = objectMapper1.writeValueAsString(matrixResult);
+            json = objectMapper1.writeValueAsString(metricsResult);
         } catch (JsonProcessingException ex) {
             throw new RuntimeException("Json not processed!");
         }

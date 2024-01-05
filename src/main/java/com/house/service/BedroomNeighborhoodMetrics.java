@@ -12,15 +12,17 @@ import java.util.stream.Collectors;
 public class BedroomNeighborhoodMetrics implements MetricsCollector {
     @Override
     public void collect(List<House> houses, String destination) {
-        Map<Integer, List<House>> bedrooms =
+        Map<Integer, NeighborhoodCount> countHouse = new HashMap<>();
+
+        Map<Integer, List<House>> bedroomGroup =
                 houses.stream().collect(Collectors.groupingBy(House::getBedrooms));
 
-        Map<Integer, NeighborhoodCount> countHouse = new HashMap<>();
-        bedrooms.forEach((bhk, records) -> {
-            Map<String, List<House>> countNeighborhood = records.stream()
+        bedroomGroup.forEach((bhk, records) -> {
+            Map<String, List<House>> neighborhoodGroup = records.stream()
                     .collect(Collectors.groupingBy(House::getNeighborhood));
+
             NeighborhoodCount count = NeighborhoodCount.builder().total(records.size()).build();
-            countNeighborhood.entrySet().forEach((entity) -> {
+            neighborhoodGroup.entrySet().forEach((entity) -> {
                 setValues(entity, count);
             });
             countHouse.put(bhk, count);
